@@ -1,5 +1,5 @@
 public abstract class Personagem {
-    private int saude;
+    protected int saude;
     private int x, y;
 
     public Personagem(int saude, int x, int y) {
@@ -12,6 +12,10 @@ public abstract class Personagem {
     
     public boolean estaVivo() {
         return saude > 0;
+    }
+
+    public int getSaude() {
+        return saude;
     }
 
     public int getX() {
