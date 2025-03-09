@@ -94,6 +94,29 @@ public class Jogador extends Personagem {
         System.out.println("O jogador recebeu " + dano + " de dano! Saúde atual: " + saude);
     }
 
+    // Método para abrir um baú
+    public void abrirBau(Bau bau) {
+        String resultado = bau.abrir();
+        System.out.println(resultado);
+
+        if (bau.getConteudo() instanceof Revolver) {
+            // Encontra um zumbi rastejante
+            System.out.println("Um Zumbi Rastejante apareceu!");
+
+            // Tentar esquivar
+            Random random = new Random();
+            int dado = random.nextInt(6) + 1;
+            if (esquivar(dado)) {
+                System.out.println("Você conseguiu esquivar do Zumbi Rastejante!");
+            } else {
+                System.out.println("Você não conseguiu esquivar do Zumbi Rastejante!");
+                receberDano(1); // Recebe dano do zumbi rastejante
+            }
+        } else if (bau.getConteudo() != null) {
+            coletarItem(bau.getConteudo());
+        }
+    }
+
     // Método para exibir a percepção em determinada rolagem
     public int getPercepcao() {
         return percepcao;
