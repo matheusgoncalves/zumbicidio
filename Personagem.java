@@ -1,6 +1,6 @@
 public abstract class Personagem {
     protected int saude;
-    private int x, y;
+    protected int x, y;
 
     public Personagem(int saude, int x, int y) {
         this.saude = saude;
