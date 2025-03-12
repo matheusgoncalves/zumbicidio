@@ -23,7 +23,7 @@ public class InterfaceMapa extends JPanel {
                 int y = j;
 
                 grid[i][j].addActionListener(e -> {
-                    mapa.moverHeroi(x, y);
+                    Personagem.moverHeroi(x, y);
                     atualizarGrid();
                 });
 
@@ -43,7 +43,7 @@ public class InterfaceMapa extends JPanel {
 
     //seleciona o icone correspondente ao grid
     private ImageIcon obterIcone(int x, int y) {
-        if (x == Mapa.getHeroiX() && y == Mapa.getHeroiY()) {
+        if (x == Personagem.getHeroiX() && y == Personagem.getHeroiY()) {
             return new ImageIcon("sprites/hero.png");
         }
 

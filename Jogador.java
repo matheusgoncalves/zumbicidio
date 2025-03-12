@@ -12,13 +12,6 @@ public class Jogador extends Personagem {
         this.inventario = new ArrayList<>();
     }
 
-    // Método para locomover-se pelo mapa
-    public void mover(int novoX, int novoY) {
-        this.x = novoX;
-        this.y = novoY;
-        System.out.println("Jogador se moveu para (" + x + ", " + y + ")");
-    }
-
     // Coletar qualquer tipo de item
     public void coletarItem(Item item) {
         // Lógica específica para revólver (acumula munição)

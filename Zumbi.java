@@ -1,4 +1,6 @@
 public abstract class Zumbi extends Personagem {
+    protected int x, y;
+
     public Zumbi(int saude, int x, int y) {
         super(saude, x, y);
     }
