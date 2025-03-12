@@ -17,6 +17,11 @@ public class Jogador extends Personagem {
         int xFinal = heroiX;
         int yFinal = heroiY;
 
+        if(Mapa.mapa1[xFinal][yFinal].equals("b") || Mapa.mapa1[xFinal][yFinal].equals("hb")){
+            Mapa.MAPA1[xFinal][yFinal]  = "hb";
+        }
+        else{ Mapa.MAPA1[xFinal][yFinal] = ""; }
+
         if ((heroiX - novoX == -1 || heroiX - novoX == 1) && heroiY == novoY) {
             xFinal = novoX;
         }
@@ -29,7 +34,12 @@ public class Jogador extends Personagem {
             if (!Mapa.mapa1[xFinal][yFinal].equals("p")) {
                 heroiX = xFinal;
                 heroiY = yFinal;
-                Mapa.MAPA1[xFinal][yFinal]  = "h";
+                if(Mapa.mapa1[xFinal][yFinal].equals("b") || Mapa.mapa1[xFinal][yFinal].equals("hb")){
+                    Mapa.MAPA1[xFinal][yFinal]  = "hb";
+                }
+                else {
+                    Mapa.MAPA1[xFinal][yFinal] = "h";
+                }
             }
         }
     }
