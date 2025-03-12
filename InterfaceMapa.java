@@ -37,7 +37,10 @@ public class InterfaceMapa extends JPanel {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 grid[i][j].setIcon(obterIcone(i, j));
+                if(Mapa.getCelula(i,j).equals("")){ System.out.print(" ,");}
+                System.out.print(Mapa.getCelula(i,j) + ",");
             }
+                System.out.println();
         }
     }
 
@@ -50,7 +53,11 @@ public class InterfaceMapa extends JPanel {
         switch (Mapa.getCelula(x, y)) {
             case "p": return new ImageIcon("sprites/parede.png");
             case "z": return new ImageIcon("sprites/zombie.png");
-            default: return null;
+            case "b": return new ImageIcon("sprites/chest.jpg");
+            case "hb": return new ImageIcon("sprites/chest2.png");
+            case "zg": return new ImageIcon("sprites/giantzombie.png");
+            case "zr": return new ImageIcon("sprites/runner.png");
+            default: return new ImageIcon("sprites/chao.png");
         }
     }
 }
