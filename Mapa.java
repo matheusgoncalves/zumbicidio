@@ -1,7 +1,7 @@
 public class Mapa {
     private static int heroiX;
     private static int heroiY;
-    private static String[][] mapa1;
+    static String[][] mapa1;
 
     public Mapa(String[][] mapaInicial, int xInicial, int yInicial) {
         this.mapa1 = mapaInicial;
@@ -9,27 +9,19 @@ public class Mapa {
         this.heroiY = yInicial;
     }
 
-    public void moverHeroi(int novoX, int novoY) {
-        int xFinal = heroiX;
-        int yFinal = heroiY;
+    // transformar em um json
+    protected static final String[][] MAPA1 = {
+            {"", "p", "", "b", "", "", "", "z", "", ""},
+            {"", "p", "", "p", "zr", "", "", "b", "", ""},
+            {"", "p", "", "p", "", "", "p", "p", "", "z"},
+            {"", "p", "", "p", "", "", "p", "p", "", ""},
+            {"", "", "b", "p", "", "zc", "p", "p", "zc", ""},
+            {"", "p", "p", "p", "", "", "p", "p", "zc", ""},
+            {"z", "p", "", "", "", "z", "p", "p", "", ""},
+            {"", "p", "", "zr", "", "b", "", "", "", ""},
+            {"", "p", "p", "p", "p", "p", "", "", "p", ""},
+            {"b", "", "", "z", "", "", "", "", "p", "zg"}
+    };
 
-        if ((heroiX - novoX == -1 || heroiX - novoX == 1) && heroiY == novoY) {
-            xFinal = novoX;
-        }
-
-        if ((heroiY - novoY == -1 || heroiY - novoY == 1) && heroiX == novoX) {
-            yFinal = novoY;
-        }
-
-        if (xFinal >= 0 && xFinal < 10 && yFinal >= 0 && yFinal < 10) {
-            if (!mapa1[xFinal][yFinal].equals("p")) {
-                heroiX = xFinal;
-                heroiY = yFinal;
-            }
-        }
-    }
-
-    public static int getHeroiX() { return heroiX; }
-    public static int getHeroiY() { return heroiY; }
     public static String getCelula(int x, int y) { return mapa1[x][y]; }
 }
