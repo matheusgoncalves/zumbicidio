@@ -12,6 +12,34 @@ public class Jogador extends Personagem {
         this.inventario = new ArrayList<>();
     }
 
+
+    public static void moverHeroi(int novoX, int novoY) {
+        int xFinal = heroiX;
+        int yFinal = heroiY;
+
+        if ((heroiX - novoX == -1 || heroiX - novoX == 1) && heroiY == novoY) {
+            xFinal = novoX;
+        }
+
+        if ((heroiY - novoY == -1 || heroiY - novoY == 1) && heroiX == novoX) {
+            yFinal = novoY;
+        }
+
+        if (xFinal >= 0 && xFinal < 10 && yFinal >= 0 && yFinal < 10) {
+            if (!Mapa.mapa1[xFinal][yFinal].equals("p")) {
+                heroiX = xFinal;
+                heroiY = yFinal;
+                Mapa.MAPA1[xFinal][yFinal]  = "h";
+            }
+        }
+    }
+
+    public static int getHeroiX() { return heroiX; }
+    public static int getHeroiY() { return heroiY; }
+
+
+
+
     // Coletar qualquer tipo de item
     public void coletarItem(Item item) {
         // Lógica específica para revólver (acumula munição)
