@@ -47,7 +47,76 @@ public class Jogador extends Personagem {
     public static int getHeroiX() { return heroiX; }
     public static int getHeroiY() { return heroiY; }
 
+    public void fugir(Zumbi zumbi){
+        int zumbiX = zumbi.x;
+        int zumbiY = zumbi.y;
+        int heroiX = getHeroiX();
+        int heroiY = getHeroiY();
 
+// O JAVA NAO SUPORTA UM SWITCH DE CLASSES PQP QUE LINGUAGEM CU
+//        switch (zumbi.getClass()){
+//            case ZumbiComum.class :
+//                Mapa.MAPA1[zumbiX][zumbiY] = "z";
+//                break;
+//            case ZumbiCorredor.class :
+//                Mapa.MAPA1[zumbiX][zumbiY] = "zc";
+//                break;
+//            case ZumbiGigante.class :
+//                Mapa.MAPA1[zumbiX][zumbiY] = "zg";
+//                break;
+//            case ZumbiRastejante.class :
+//                Mapa.MAPA1[zumbiX][zumbiY] = "zr";
+//                break;
+//        }
+
+        if (zumbi instanceof ZumbiComum) {
+            Mapa.MAPA1[zumbiX][zumbiY] = "z";
+        } else if (zumbi instanceof ZumbiCorredor) {
+            Mapa.MAPA1[zumbiX][zumbiY] = "zc";
+        } else if (zumbi instanceof ZumbiGigante) {
+            Mapa.MAPA1[zumbiX][zumbiY] = "zg";
+        } else if (zumbi instanceof ZumbiRastejante) {
+            Mapa.MAPA1[zumbiX][zumbiY] = "zr";
+        }
+
+
+        while (true) {
+            Random random = new Random();
+            int direcao = random.nextInt(4);
+
+            switch (direcao) {
+                case 0:
+                    heroiX = heroiX -1;
+                    break;
+
+                case 1:
+                    heroiX = heroiX +1;
+                    break;
+
+                case 2:
+                    heroiY = heroiY -1;
+                    break;
+
+                case 3:
+                    heroiY = heroiY +1;
+                    break;
+            }
+
+            if (!Mapa.MAPA1[heroiX][heroiY].equals("p")){
+                if(Mapa.mapa1[heroiX][heroiY].equals("b") || Mapa.mapa1[heroiX][heroiY].equals("hb")){
+                    Mapa.MAPA1[heroiX][heroiY]  = "hb";
+                    return;
+                } else if (Mapa.mapa1[heroiX][heroiY].equals("z") || Mapa.mapa1[heroiX][heroiY].equals("zg") || Mapa.mapa1[heroiX][heroiY].equals("zr") || Mapa.mapa1[heroiX][heroiY].equals("zc")) {
+                    Mapa.MAPA1[heroiX][heroiY] = "h";
+                    //iniciar Combate(jogador, zumbi[x][y])
+                    return;
+                } else {
+                    Mapa.MAPA1[heroiX][heroiY] = "h";
+                    return;
+                }
+            };
+        }
+    }
 
 
     // Coletar qualquer tipo de item

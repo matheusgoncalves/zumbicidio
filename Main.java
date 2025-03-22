@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         Mapa mapa = new Mapa(Mapa.MAPA1, 0, 0);
         Jogador jogador = new Jogador(0,0,0);
-
+        Zumbi zumbi = new ZumbiComum(0,0);
 
         JFrame janela = new JFrame("Mapa Grid");
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,8 +21,8 @@ public class Main {
         combate.setSize(200, 600);
 
         combate.setLocation(600,0);
-        InterfaceCombate painelCombate = new InterfaceCombate(jogador);
-
+        InterfaceCombate painelCombate = new InterfaceCombate(jogador, zumbi);
+        combate.add(painelCombate, BorderLayout.SOUTH);
 
 
 
