@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 public class Jogador extends Personagem {
     private int percepcao; // Percepção utilizada para se desviar de ataques
@@ -81,16 +82,15 @@ public class Jogador extends Personagem {
     }
 
     public void iniciarCombate(Zumbi zumbi) {
-        InterfaceCombate.mostrarJanelaCombate(this, zumbi);
-
         Random random = new Random();
         System.out.println("Combate iniciado contra " + zumbi.getClass().getSimpleName() + "!");
 
         // Ataque inicial obrigatório
         System.out.println("\nTurno do jogador (ataque inicial):");
-        Arma armaSelecionada = escolherArma();
-        atacar(zumbi, armaSelecionada);
-        interfaceMapa.atualizarGrid(); // Atualiza a interface após o ataque inicial
+        Arma[] armaSelecionada = {escolherArma()};
+        atacar(zumbi, armaSelecionada[0]);
+        interfaceMapa.atualizarGrid();
+        InterfaceCombate.atualizarInterface(this, zumbi);
 
         if (!zumbi.estaVivo()) {
             System.out.println("O zumbi foi derrotado no primeiro golpe!");
@@ -101,51 +101,52 @@ public class Jogador extends Personagem {
             return;
         }
 
-        // Loop de escolha após o ataque inicial
-        while (zumbi.estaVivo() && this.estaVivo()) {
-            // Mostra opções com JOptionPane
-            String[] opcoes = {"Atacar", "Fugir"};
-            int escolha = JOptionPane.showOptionDialog(
-                    null,
-                    "Sua saúde: " + this.getSaude() + "\nSaúde do zumbi: " + zumbi.getSaude(),
-                    "Combate contra " + zumbi.getClass().getSimpleName(),
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opcoes,
-                    opcoes[0]
-            );
-
-            if (escolha == 0) { // Atacar (YES_OPTION)
+        // Configura os listeners para as ações de atacar e fugir
+        final boolean[] combateAtivo = {true}; // Controle local do combate
+        ActionListener onAtacar = e -> {
+            if (combateAtivo[0] && zumbi.estaVivo() && this.estaVivo()) {
                 System.out.println("\nTurno do jogador:");
-                armaSelecionada = escolherArma();
-                atacar(zumbi, armaSelecionada);
+                armaSelecionada[0] = escolherArma();
+                atacar(zumbi, armaSelecionada[0]);
 
                 if (!zumbi.estaVivo()) {
                     System.out.println("O zumbi foi derrotado!");
                     mapa.removerZumbi(zumbi);
-                    break;
-                }
-
-                // Turno do zumbi
-                System.out.println("\nTurno do zumbi:");
-                int dadoEsquiva = random.nextInt(6) + 1;
-                if (esquivar(dadoEsquiva)) {
-                    System.out.println("Você esquivou do ataque do zumbi!");
+                    InterfaceCombate.fecharJanela();
+                    combateAtivo[0] = false;
                 } else {
-                    zumbi.atacar(this);
+                    // Turno do zumbi
+                    System.out.println("\nTurno do zumbi:");
+
+                    int dadoEsquiva = random.nextInt(6) + 1;
+
+                    if (esquivar(dadoEsquiva)) {
+                        System.out.println("Você esquivou do ataque do zumbi!");
+                    } else {
+                        zumbi.atacar(this);
+                    }
+
+                    InterfaceCombate.atualizarInterface(this, zumbi);
+                    interfaceMapa.atualizarGrid();
+
+                    if (!this.estaVivo()) {
+                        System.out.println("Derrota! Você foi derrotado pelo zumbi!");
+                        InterfaceCombate.fecharJanela();
+                        combateAtivo[0] = false;
+                    }
                 }
-            } else { // Fugir (NO_OPTION ou fechar a janela)
-                System.out.println("Você fugiu do combate!");
-                break;
             }
+        };
 
-            interfaceMapa.atualizarGrid();
-        }
+        ActionListener onFugir = e -> {
+            if (combateAtivo[0]) {
+                System.out.println("Você fugiu do combate!");
+                combateAtivo[0] = false;
+            }
+        };
 
-        if (!this.estaVivo()) {
-            System.out.println("Derrota! Você foi derrotado pelo zumbi!");
-        }
+        // Mostra a janela de combate com os listeners
+        InterfaceCombate.mostrarJanelaCombate(this, zumbi, onAtacar, onFugir);
     }
 
     // Coletar qualquer tipo de item

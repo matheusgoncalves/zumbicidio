@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
-
     public static void main(String[] args) {
         String[][] MAPA1 = {
                 {"h", "p", "", "b", "", "", "", "z", "", ""},
@@ -27,6 +26,8 @@ public class Main {
         InterfaceMapa painelMapa = new InterfaceMapa(mapa);
         jogador.vincularInterfaceMapa(painelMapa);
         janela.add(painelMapa, BorderLayout.CENTER);
+
+        janela.setLocationRelativeTo(null);
 
         janela.setVisible(true);
     }
