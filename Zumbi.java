@@ -5,6 +5,7 @@ public abstract class Zumbi extends Personagem {
         super(saude, x, y);
     }
 
+    @Override
     public abstract void mover(int x, int y);
 
     public  boolean validarAtaque(Arma arma) {

@@ -13,8 +13,7 @@ public class InterfaceMapa extends JPanel {
         atualizarGrid();
     }
 
-
-    //cria o grid e coloca a ação de mover nos botões
+    // Adicionar método criarGrid
     private void criarGrid() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -22,23 +21,30 @@ public class InterfaceMapa extends JPanel {
                 int x = i;
                 int y = j;
 
-                grid[i][j].addActionListener(e -> {
-                    Jogador.moverHeroi(x, y);
-                    atualizarGrid();
-                });
+                // Passar referência do jogador
+                Jogador jogador = (Jogador) mapa.getCelula(0, 0); // Supondo que o jogador está em (0,0)
 
+                grid[i][j].addActionListener(e -> {
+                    jogador.mover(x, y);
+                    atualizarGrid(); // Atualiza a interface após o movimento
+                });
                 add(grid[i][j]);
             }
         }
     }
 
-    //atualiza o icone
+    // Atualiza o ícone
     public void atualizarGrid() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 grid[i][j].setIcon(obterIcone(i, j));
-                if(Mapa.getCelula(i,j).equals("")){ System.out.print(" ,");}
-                System.out.print(Mapa.getCelula(i,j) + ",");
+
+                Object celula = mapa.getCelula(i, j);
+                if (celula == null) {
+                    System.out.print(" ,");
+                } else {
+                    System.out.print(celula.getClass().getSimpleName() + ",");
+                }
             }
                 System.out.println();
         }
@@ -46,18 +52,28 @@ public class InterfaceMapa extends JPanel {
 
     //seleciona o icone correspondente ao grid
     private ImageIcon obterIcone(int x, int y) {
-        if (x == Jogador.getHeroiX() && y == Jogador.getHeroiY()) {
+        Object elemento = mapa.getCelula(x, y);
+
+        if (elemento instanceof Jogador) {
             return new ImageIcon("sprites/hero.png");
+        } else if (elemento instanceof Parede) {
+            return new ImageIcon("sprites/parede.png");
+        } else if (elemento instanceof ZumbiComum) {
+            return new ImageIcon("sprites/zombie.png");
+        } else if (elemento instanceof Bau) {
+            Bau bau = (Bau) elemento;
+
+            if (bau.estaAberto()) {
+                return new ImageIcon("sprites/chest2.png");
+            } else {
+                return new ImageIcon("sprites/chest.png");
+            }
+        } else if (elemento instanceof ZumbiGigante) {
+            return new ImageIcon("sprites/giantzombie.png");
+        } else if (elemento instanceof ZumbiCorredor) {
+            return new ImageIcon("sprites/runner.png");
         }
 
-        switch (Mapa.getCelula(x, y)) {
-            case "p": return new ImageIcon("sprites/parede.png");
-            case "z": return new ImageIcon("sprites/zombie.png");
-            case "b": return new ImageIcon("sprites/chest.jpg");
-            case "hb": return new ImageIcon("sprites/chest2.png");
-            case "zg": return new ImageIcon("sprites/giantzombie.png");
-            case "zr": return new ImageIcon("sprites/runner.png");
-            default: return new ImageIcon("sprites/chao.png");
-        }
+        return new ImageIcon("sprites/chao.png");
     }
 }

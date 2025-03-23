@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Jogador extends Personagem {
     private int percepcao; // Percepção utilizada para se desviar de ataques
     protected List<Item> inventario; // Lista de itens coletados
+    private Mapa mapa;
 
     public Jogador(int x, int y, int dificuldade) {
         super(5, x, y);
@@ -12,43 +13,64 @@ public class Jogador extends Personagem {
         this.inventario = new ArrayList<>();
     }
 
+    @Override
+    public void mover(int novoX, int novoY) {
+        Mapa mapa = getMapaAtual(); // Você precisa ter uma referência ao mapa
 
-    public static void moverHeroi(int novoX, int novoY) {
-        int xFinal = heroiX;
-        int yFinal = heroiY;
-
-        if(Mapa.mapa1[xFinal][yFinal].equals("b") || Mapa.mapa1[xFinal][yFinal].equals("hb")){
-            Mapa.MAPA1[xFinal][yFinal]  = "hb";
-        }
-        else{ Mapa.MAPA1[xFinal][yFinal] = ""; }
-
-        if ((heroiX - novoX == -1 || heroiX - novoX == 1) && heroiY == novoY) {
-            xFinal = novoX;
+        if (mapa == null) {
+            System.out.println("Erro: Mapa não vinculado ao jogador!");
+            return;
         }
 
-        if ((heroiY - novoY == -1 || heroiY - novoY == 1) && heroiX == novoX) {
-            yFinal = novoY;
+        // Calcula a distância do movimento
+        int distanciaX = Math.abs(novoX - posicaoX);
+        int distanciaY = Math.abs(novoY - posicaoY);
+
+        // Só permite movimento de 1 casa (horizontal ou vertical)
+        if ((distanciaX > 1 || distanciaY > 1) || (distanciaX + distanciaY != 1)) {
+            System.out.println("Movimento inválido! Só pode mover 1 casa por vez.");
+            return;
         }
 
-        if (xFinal >= 0 && xFinal < 10 && yFinal >= 0 && yFinal < 10) {
-            if (!Mapa.mapa1[xFinal][yFinal].equals("p")) {
-                heroiX = xFinal;
-                heroiY = yFinal;
-                if(Mapa.mapa1[xFinal][yFinal].equals("b") || Mapa.mapa1[xFinal][yFinal].equals("hb")){
-                    Mapa.MAPA1[xFinal][yFinal]  = "hb";
-                }
-                else {
-                    Mapa.MAPA1[xFinal][yFinal] = "h";
-                }
-            }
+        if (!mapa.posicaoValida(novoX, novoY)) {
+            System.out.println("Movimento bloqueado!");
+            return;
         }
+
+        // Verifica colisão com zumbi
+        Object elemento = mapa.getCelula(novoX, novoY);
+        if (elemento instanceof Zumbi) {
+            iniciarCombate((Zumbi) elemento);
+            return;
+        }
+
+        // Atualiza posição
+        mapa.atualizarPosicao(posicaoX, posicaoY, novoX, novoY);
+        posicaoX = novoX;
+        posicaoY = novoY;
     }
 
-    public static int getHeroiX() { return heroiX; }
-    public static int getHeroiY() { return heroiY; }
+    public void vincularMapa(Mapa mapa) {
+        this.mapa = mapa;
+    }
 
+    private Mapa getMapaAtual() {
+        return mapa;
+    }
 
+    public void iniciarCombate(Zumbi zumbi) {
+        InterfaceCombate.mostrarJanelaCombate(this, zumbi);
 
+//        // Lógica básica de combate
+//        while (zumbi.estaVivo() && this.estaVivo()) {
+//            // Implemente rounds de combate aqui
+//            // Exemplo: jogador.atacar(zumbi, armaSelecionada);
+//        }
+
+        if (!zumbi.estaVivo()) {
+            mapa.removerZumbi(zumbi);
+        }
+    }
 
     // Coletar qualquer tipo de item
     public void coletarItem(Item item) {

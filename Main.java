@@ -4,9 +4,21 @@ import java.awt.*;
 public class Main {
 
     public static void main(String[] args) {
-        Mapa mapa = new Mapa(Mapa.MAPA1, 0, 0);
-        Jogador jogador = new Jogador(0,0,0);
+        String[][] MAPA1 = {
+                {"h", "p", "", "b", "", "", "", "z", "", ""},
+                {"", "p", "", "p", "zr", "", "", "b", "", ""},
+                {"", "p", "", "p", "", "", "p", "p", "", "z"},
+                {"", "p", "", "p", "", "", "p", "p", "", ""},
+                {"", "", "b", "p", "", "zc", "p", "p", "zc", ""},
+                {"", "p", "p", "p", "", "", "p", "p", "zc", ""},
+                {"z", "p", "", "", "", "z", "p", "p", "", ""},
+                {"", "p", "", "zr", "", "b", "", "", "", ""},
+                {"", "p", "p", "p", "p", "p", "", "", "p", ""},
+                {"b", "", "", "z", "", "", "", "", "p", "zg"}
+        };
 
+        Jogador jogador = new Jogador(0,0,0);
+        Mapa mapa = new Mapa(MAPA1, jogador);
 
         JFrame janela = new JFrame("Mapa Grid");
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,18 +27,6 @@ public class Main {
         InterfaceMapa painelMapa = new InterfaceMapa(mapa);
         janela.add(painelMapa, BorderLayout.CENTER);
 
-
-        JFrame combate = new JFrame("Combate");
-        combate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        combate.setSize(200, 600);
-
-        combate.setLocation(600,0);
-        InterfaceCombate painelCombate = new InterfaceCombate(jogador);
-
-
-
-
         janela.setVisible(true);
-        combate.setVisible(true);
     }
 }
