@@ -25,6 +25,7 @@ public class Main {
         janela.setSize(600, 600);
 
         InterfaceMapa painelMapa = new InterfaceMapa(mapa);
+        jogador.vincularInterfaceMapa(painelMapa);
         janela.add(painelMapa, BorderLayout.CENTER);
 
         janela.setVisible(true);

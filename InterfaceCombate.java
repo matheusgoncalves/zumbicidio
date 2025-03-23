@@ -20,23 +20,19 @@ public class InterfaceCombate extends JPanel  {
     }
 
     private static class PainelCombate extends JPanel {
+        private JLabel labelSaudeJogador;
+        private JLabel labelSaudeZumbi;
+
         public PainelCombate(Jogador jogador, Zumbi zumbi) {
             setLayout(new GridLayout(4, 1));
 
-//            add(new JLabel("Combate contra: " + zumbi.getTipo()));
-            add(new JLabel("Sua saúde: " + jogador.getSaude()));
-            add(new JLabel("Saúde do zumbi: " + zumbi.getSaude()));
+            labelSaudeJogador = new JLabel("Sua saúde: " + jogador.getSaude());
+            labelSaudeZumbi = new JLabel("Saúde do zumbi: " + zumbi.getSaude());
+            add(new JLabel("Combate contra: " + zumbi.getClass().getSimpleName()));
 
+            JPanel botoes = new JPanel(new FlowLayout());
             JButton atacarBtn = new JButton("Atacar");
-//            atacarBtn.addActionListener(e -> {
-//                jogador.atacar(zumbi, jogador.getArmaEquipada());
-//                atualizarDados(jogador, zumbi);
-//            });
-            add(atacarBtn);
-        }
-
-        private void atualizarDados(Jogador jogador, Zumbi zumbi) {
-            // Atualiza labels
+            JButton fugirBtn = new JButton("Fugir");
         }
     }
 }

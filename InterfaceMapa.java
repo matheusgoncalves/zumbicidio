@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class InterfaceMapa extends JPanel {
     private final Mapa mapa;
@@ -22,7 +24,7 @@ public class InterfaceMapa extends JPanel {
                 int y = j;
 
                 // Passar referência do jogador
-                Jogador jogador = (Jogador) mapa.getCelula(0, 0); // Supondo que o jogador está em (0,0)
+                Jogador jogador = (Jogador) mapa.getJogador();
 
                 grid[i][j].addActionListener(e -> {
                     jogador.mover(x, y);
@@ -52,26 +54,31 @@ public class InterfaceMapa extends JPanel {
 
     //seleciona o icone correspondente ao grid
     private ImageIcon obterIcone(int x, int y) {
-        Object elemento = mapa.getCelula(x, y);
+        List<Object> elementos = mapa.getCelula(x, y);
 
-        if (elemento instanceof Jogador) {
-            return new ImageIcon("sprites/hero.png");
-        } else if (elemento instanceof Parede) {
-            return new ImageIcon("sprites/parede.png");
-        } else if (elemento instanceof ZumbiComum) {
-            return new ImageIcon("sprites/zombie.png");
-        } else if (elemento instanceof Bau) {
-            Bau bau = (Bau) elemento;
-
-            if (bau.estaAberto()) {
-                return new ImageIcon("sprites/chest2.png");
-            } else {
-                return new ImageIcon("sprites/chest.png");
+        // Prioridade: mostrar o jogador se estiver presente
+        for (Object elemento : elementos) {
+            if (elemento instanceof Jogador) {
+                return new ImageIcon("sprites/hero.png");
             }
-        } else if (elemento instanceof ZumbiGigante) {
-            return new ImageIcon("sprites/giantzombie.png");
-        } else if (elemento instanceof ZumbiCorredor) {
-            return new ImageIcon("sprites/runner.png");
+        }
+
+        // Prioridade 2: Mostrar outros elementos
+        for (Object elemento : elementos) {
+            if (elemento instanceof Parede) {
+                return new ImageIcon("sprites/parede.png");
+            } else if (elemento instanceof ZumbiComum) {
+                return new ImageIcon("sprites/zombie.png");
+            } else if (elemento instanceof Bau) {
+                Bau bau = (Bau) elemento;
+                return bau.estaAberto()
+                        ? new ImageIcon("sprites/chest2.png")
+                        : new ImageIcon("sprites/chest.jpg");
+            } else if (elemento instanceof ZumbiGigante) {
+                return new ImageIcon("sprites/giantzombie.png");
+            } else if (elemento instanceof ZumbiCorredor) {
+                return new ImageIcon("sprites/runner.png");
+            }
         }
 
         return new ImageIcon("sprites/chao.png");

@@ -1,11 +1,13 @@
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class Jogador extends Personagem {
     private int percepcao; // Percepção utilizada para se desviar de ataques
     protected List<Item> inventario; // Lista de itens coletados
     private Mapa mapa;
+    private InterfaceMapa interfaceMapa;
 
     public Jogador(int x, int y, int dificuldade) {
         super(5, x, y);
@@ -38,16 +40,22 @@ public class Jogador extends Personagem {
         }
 
         // Verifica colisão com zumbi
-        Object elemento = mapa.getCelula(novoX, novoY);
-        if (elemento instanceof Zumbi) {
-            iniciarCombate((Zumbi) elemento);
-            return;
+        List<Object> celulas = mapa.getCelula(novoX, novoY);
+        for (Object elemento: celulas) {
+            if (elemento instanceof Zumbi) {
+                iniciarCombate((Zumbi) elemento);
+                return;
+            } else if (elemento instanceof Bau bau) {
+                this.abrirBau(bau);
+            }
         }
 
         // Atualiza posição
         mapa.atualizarPosicao(posicaoX, posicaoY, novoX, novoY);
         posicaoX = novoX;
         posicaoY = novoY;
+
+        interfaceMapa.atualizarGrid();
     }
 
     public void vincularMapa(Mapa mapa) {
@@ -58,17 +66,85 @@ public class Jogador extends Personagem {
         return mapa;
     }
 
+    // Método auxiliar para escolher arma (simplificado por enquanto)
+    private Arma escolherArma() {
+        // Por enquanto, retorna null (ataque com as mãos) ou a primeira arma do inventário
+        if (inventario.isEmpty()) {
+            return null; // Ataque com as mãos
+        }
+        for (Item item : inventario) {
+            if (item instanceof Arma) {
+                return (Arma) item; // Usa a primeira arma encontrada
+            }
+        }
+        return null;
+    }
+
     public void iniciarCombate(Zumbi zumbi) {
         InterfaceCombate.mostrarJanelaCombate(this, zumbi);
 
-//        // Lógica básica de combate
-//        while (zumbi.estaVivo() && this.estaVivo()) {
-//            // Implemente rounds de combate aqui
-//            // Exemplo: jogador.atacar(zumbi, armaSelecionada);
-//        }
+        Random random = new Random();
+        System.out.println("Combate iniciado contra " + zumbi.getClass().getSimpleName() + "!");
+
+        // Ataque inicial obrigatório
+        System.out.println("\nTurno do jogador (ataque inicial):");
+        Arma armaSelecionada = escolherArma();
+        atacar(zumbi, armaSelecionada);
+        interfaceMapa.atualizarGrid(); // Atualiza a interface após o ataque inicial
 
         if (!zumbi.estaVivo()) {
+            System.out.println("O zumbi foi derrotado no primeiro golpe!");
             mapa.removerZumbi(zumbi);
+            return;
+        } else if (!this.estaVivo()) {
+            System.out.println("Derrota! Você foi derrotado no primeiro ataque!");
+            return;
+        }
+
+        // Loop de escolha após o ataque inicial
+        while (zumbi.estaVivo() && this.estaVivo()) {
+            // Mostra opções com JOptionPane
+            String[] opcoes = {"Atacar", "Fugir"};
+            int escolha = JOptionPane.showOptionDialog(
+                    null,
+                    "Sua saúde: " + this.getSaude() + "\nSaúde do zumbi: " + zumbi.getSaude(),
+                    "Combate contra " + zumbi.getClass().getSimpleName(),
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcoes,
+                    opcoes[0]
+            );
+
+            if (escolha == 0) { // Atacar (YES_OPTION)
+                System.out.println("\nTurno do jogador:");
+                armaSelecionada = escolherArma();
+                atacar(zumbi, armaSelecionada);
+
+                if (!zumbi.estaVivo()) {
+                    System.out.println("O zumbi foi derrotado!");
+                    mapa.removerZumbi(zumbi);
+                    break;
+                }
+
+                // Turno do zumbi
+                System.out.println("\nTurno do zumbi:");
+                int dadoEsquiva = random.nextInt(6) + 1;
+                if (esquivar(dadoEsquiva)) {
+                    System.out.println("Você esquivou do ataque do zumbi!");
+                } else {
+                    zumbi.atacar(this);
+                }
+            } else { // Fugir (NO_OPTION ou fechar a janela)
+                System.out.println("Você fugiu do combate!");
+                break;
+            }
+
+            interfaceMapa.atualizarGrid();
+        }
+
+        if (!this.estaVivo()) {
+            System.out.println("Derrota! Você foi derrotado pelo zumbi!");
         }
     }
 
@@ -147,6 +223,10 @@ public class Jogador extends Personagem {
         System.out.println("O jogador recebeu " + dano + " de dano! Saúde atual: " + saude);
     }
 
+    public void vincularInterfaceMapa(InterfaceMapa interfaceMapa) {
+        this.interfaceMapa = interfaceMapa;
+    }
+
     // Método para abrir um baú
     public void abrirBau(Bau bau) {
         String resultado = bau.abrir();
@@ -168,6 +248,8 @@ public class Jogador extends Personagem {
         } else if (bau.getConteudo() != null) {
             coletarItem(bau.getConteudo());
         }
+
+        interfaceMapa.atualizarGrid();
     }
 
     // Método para exibir a percepção em determinada rolagem

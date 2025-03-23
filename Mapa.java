@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Mapa {
-    private final Object[][] grid; // Agora aceita qualquer tipo de objeto
+    private final List<Object>[][] grid; // Matriz de listas
     private final int TAMANHO = 10;
     private final Jogador jogador;
     private List<Zumbi> zumbis = new ArrayList<>();
 
+    @SuppressWarnings("unchecked")
     public Mapa(String[][] mapaSimbolos, Jogador jogador) {
-        this.grid = new Object[TAMANHO][TAMANHO];
+        this.grid = new List[TAMANHO][TAMANHO];
         this.jogador = jogador;
         jogador.vincularMapa(this);
         inicializarGrid(mapaSimbolos);
@@ -20,29 +21,31 @@ public class Mapa {
     private void inicializarGrid(String[][] mapaSimbolos) {
         for (int i = 0; i < TAMANHO; i++) {
             for (int j = 0; j < TAMANHO; j++) {
+                grid[i][j] = new ArrayList<>();
+
                 switch (Objects.requireNonNull(mapaSimbolos[i])[j]) {
                     case "p":
-                        assert grid[i] != null;
-                        grid[i][j] = new Parede();
+                        grid[i][j].add(new Parede());
                         break;
                     case "z":
-                        assert grid[i] != null;
-                        grid[i][j] = new ZumbiComum(i, j);
+                        grid[i][j].add(new ZumbiComum(i, j));
+                        break;
+                    case "zg":
+                        grid[i][j].add(new ZumbiGigante(i, j));
+                        break;
+                    case "zr":
+                        grid[i][j].add(new ZumbiCorredor(i, j));
                         break;
                     case "b":
-                        assert grid[i] != null;
-                        grid[i][j] = new Bau(gerarNumeroAleatorio());
+                        grid[i][j].add(new Bau(gerarNumeroAleatorio()));
                         break;
                     case "h": // Posição inicial do herói
-                        assert grid[i] != null;
-                        grid[i][j] = jogador;
+                        grid[i][j].add(jogador);
                         jogador.posicaoX = i;
                         jogador.posicaoY = j;
                         break;
-                    // Adicione outros casos conforme necessário
                     default:
-                        assert grid[i] != null;
-                        grid[i][j] = null;
+                        break;
                 }
             }
         }
@@ -55,16 +58,10 @@ public class Mapa {
 
     // Método para atualizar posições
     public void atualizarPosicao(int antigoX, int antigoY, int novoX, int novoY) {
-        Object elemento = grid[antigoX][antigoY];
-
-        // Atualiza as coordenadas do elemento (se for um Personagem)
-        if (elemento instanceof Personagem) {
-            ((Personagem) elemento).posicaoX = novoX;
-            ((Personagem) elemento).posicaoY = novoY;
-        }
-
-        grid[antigoX][antigoY] = null;
-        grid[novoX][novoY] = elemento;
+        // Remove o jogador da posição antiga
+        grid[antigoX][antigoY].remove(jogador);
+        // Adiciona o jogador à nova posição
+        grid[novoX][novoY].add(jogador);
     }
 
     // Método para verificar colisões
@@ -72,18 +69,27 @@ public class Mapa {
         if (x < 0 || x >= TAMANHO || y < 0 || y >= TAMANHO) {
             return false;
         }
-
-        return !(grid[x][y] instanceof Parede);
+        // Verifica se há parede na lista
+        for (Object obj : grid[x][y]) {
+            if (obj instanceof Parede) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Método para acessar elementos
-    public Object getCelula(int x, int y) {
+    public List<Object> getCelula(int x, int y) {
         return grid[x][y];
     }
 
     public void removerZumbi(Zumbi zumbi) {
-        grid[zumbi.getX()][zumbi.getY()] = null;
+        grid[zumbi.getX()][zumbi.getY()].remove(zumbi);
         zumbis.remove(zumbi);
+    }
+
+    public Jogador getJogador() {
+        return jogador;
     }
 
     public List<Zumbi> getZumbis() {
