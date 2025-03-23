@@ -4,8 +4,13 @@ import java.awt.*;
 public class Main {
 
     public static void main(String[] args) {
+        int percepcao = MenuDificuldade.exibirMenu();
+        MenuPrincipal menu = MenuPrincipal.exibirMenu();
+
+        System.out.println(menu.isDebugMode());
+
         Mapa mapa = new Mapa(Mapa.MAPA1, 0, 0);
-        Jogador jogador = new Jogador(0,0,0);
+        Jogador jogador = new Jogador(0,0,percepcao);
         Zumbi zumbi = new ZumbiComum(0,0);
 
         JFrame janela = new JFrame("Mapa Grid");
@@ -23,8 +28,6 @@ public class Main {
         combate.setLocation(600,0);
         InterfaceCombate painelCombate = new InterfaceCombate(jogador, zumbi);
         combate.add(painelCombate, BorderLayout.SOUTH);
-
-
 
         janela.setVisible(true);
         combate.setVisible(true);
