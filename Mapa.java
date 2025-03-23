@@ -17,6 +17,54 @@ public class Mapa {
         inicializarGrid(mapaSimbolos);
     }
 
+    private static final String[][] MAPA1 = {
+            {"h", "p", "", "b", "", "", "", "z", "", ""},
+            {"", "p", "", "p", "zr", "", "", "b", "", ""},
+            {"", "p", "", "p", "", "", "p", "p", "", "z"},
+            {"", "p", "", "p", "", "", "p", "p", "", ""},
+            {"", "", "b", "p", "", "zc", "p", "p", "zc", ""},
+            {"", "p", "p", "p", "", "", "p", "p", "zc", ""},
+            {"z", "p", "", "", "", "z", "p", "p", "", ""},
+            {"", "p", "", "zr", "", "b", "", "", "", ""},
+            {"", "p", "p", "p", "p", "p", "", "", "p", ""},
+            {"b", "", "", "z", "", "", "", "", "p", "zg"}
+    };
+    private static final String[][] MAPA2 = {
+            {"h", "p", "", "", "p", "z", "", "b", "p", "p"},
+            {"", "p", "b", "", "p", "", "p", "", "p", "p"},
+            {"", "p", "", "", "p", "", "p", "zr", "", "p"},
+            {"", "", "", "", "", "zc", "", "p", "z", ""},
+            {"p", "p", "p", "p", "z", "p", "", "", "p", "zc"},
+            {"", "", "", "", "", "p", "p", "b", "p", ""},
+            {"z", "p", "", "p", "zc", "", "p", "", "p", ""},
+            {"", "p", "z", "", "", "zr", "", "p", "", ""},
+            {"b", "p", "p", "p", "", "p", "", "p", "z", ""},
+            {"p", "p", "p", "p", "b", "p", "", "p", "", "zg"}
+    };
+    private static final String[][] MAPA3 = {
+            {"h", "p", "p", "", "", "z", "b", "", "", ""},
+            {"", "", "", "p", "", "p", "", "p", "z", ""},
+            {"", "", "b", "", "", "p", "p", "p", "p", "zc"},
+            {"", "p", "p", "p", "", "zr", "", "", "", "p"},
+            {"z", "", "", "p", "zc", "p", "b", "", "p", ""},
+            {"p", "p", "", "", "", "", "p", "z", "", "p"},
+            {"", "", "p", "z", "", "", "", "p", "zr", ""},
+            {"p", "", "", "", "", "zc", "", "", "p", "b"},
+            {"p", "p", "", "p", "", "p", "", "z", "", "p"},
+            {"p", "p", "z", "p", "b", "p", "", "p", "p", "zg"}
+    };
+
+    static String[][] randomMap(){
+        Random rand = new Random();
+        int escolha = rand.nextInt(3);
+        switch (escolha){
+            case (0): return MAPA1;
+            case (1): return MAPA2;
+            case (2): return MAPA3;
+            default: return MAPA1;
+        }
+    };
+
     // Converte símbolos para objetos
     private void inicializarGrid(String[][] mapaSimbolos) {
         for (int i = 0; i < TAMANHO; i++) {

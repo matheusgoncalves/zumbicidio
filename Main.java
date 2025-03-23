@@ -3,21 +3,17 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        String[][] MAPA1 = {
-                {"h", "p", "", "b", "", "", "", "z", "", ""},
-                {"", "p", "", "p", "zr", "", "", "b", "", ""},
-                {"", "p", "", "p", "", "", "p", "p", "", "z"},
-                {"", "p", "", "p", "", "", "p", "p", "", ""},
-                {"", "", "b", "p", "", "zc", "p", "p", "zc", ""},
-                {"", "p", "p", "p", "", "", "p", "p", "zc", ""},
-                {"z", "p", "", "", "", "z", "p", "p", "", ""},
-                {"", "p", "", "zr", "", "b", "", "", "", ""},
-                {"", "p", "p", "p", "p", "p", "", "", "p", ""},
-                {"b", "", "", "z", "", "", "", "", "p", "zg"}
-        };
 
-        Jogador jogador = new Jogador(0,0,0);
-        Mapa mapa = new Mapa(MAPA1, jogador);
+        int percepcao = MenuDificuldade.exibirMenu();
+        MenuPrincipal menu = MenuPrincipal.exibirMenu();
+
+        System.out.println(menu.isDebugMode());
+
+        Jogador jogador = new Jogador(0,0,percepcao);
+
+        String[][] randomMap = Mapa.randomMap();
+
+        Mapa mapa = new Mapa(randomMap, jogador);
 
         JFrame janela = new JFrame("Mapa Grid");
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
