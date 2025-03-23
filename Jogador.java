@@ -97,7 +97,7 @@ public class Jogador extends Personagem {
             mapa.removerZumbi(zumbi);
             return;
         } else if (!this.estaVivo()) {
-            System.out.println("Derrota! Você foi derrotado no primeiro ataque!");
+            interfaceMapa.exibirMensagem("Derrota! Você foi derrotado no primeiro ataque!");
             return;
         }
 
@@ -110,8 +110,9 @@ public class Jogador extends Personagem {
                 atacar(zumbi, armaSelecionada[0]);
 
                 if (!zumbi.estaVivo()) {
-                    System.out.println("O zumbi foi derrotado!");
+                    interfaceMapa.exibirMensagem("O zumbi foi derrotado!");
                     mapa.removerZumbi(zumbi);
+                    interfaceMapa.atualizarGrid();
                     InterfaceCombate.fecharJanela();
                     combateAtivo[0] = false;
                 } else {

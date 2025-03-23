@@ -6,17 +6,37 @@ import java.util.ArrayList;
 public class InterfaceMapa extends JPanel {
     private final Mapa mapa;
     private final JButton[][] grid;
+    private JTextArea mensagemArea; // Área para exibir mensagens
 
     public InterfaceMapa(Mapa mapa) {
         this.mapa = mapa;
-        setLayout(new GridLayout(10, 10));
+        setLayout(new BorderLayout()); // Muda para BorderLayout para acomodar a área de mensagens
+
+        // Grid do mapa
+        JPanel gridPanel = new JPanel(new GridLayout(10, 10));
         grid = new JButton[10][10];
-        criarGrid();
+        criarGrid(gridPanel);
+        add(gridPanel, BorderLayout.CENTER);
+
+        // Área de mensagens
+        mensagemArea = new JTextArea(5, 20); // 5 linhas, 20 colunas
+        mensagemArea.setEditable(false); // Apenas leitura
+        mensagemArea.setLineWrap(true); // Quebra de linha automática
+        mensagemArea.setWrapStyleWord(true); // Quebra em palavras
+        JScrollPane scrollPane = new JScrollPane(mensagemArea); // Adiciona scroll se necessário
+        add(scrollPane, BorderLayout.SOUTH); // Posiciona na parte inferior
+
         atualizarGrid();
     }
 
+    // Método para exibir mensagens
+    public void exibirMensagem(String mensagem) {
+        mensagemArea.append(mensagem + "\n"); // Adiciona a mensagem com quebra de linha
+        mensagemArea.setCaretPosition(mensagemArea.getDocument().getLength()); // Rola para o final
+    }
+
     // Adicionar método criarGrid
-    private void criarGrid() {
+    private void criarGrid(JPanel gridPanel) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 grid[i][j] = new JButton();
@@ -30,7 +50,7 @@ public class InterfaceMapa extends JPanel {
                     jogador.mover(x, y);
                     atualizarGrid(); // Atualiza a interface após o movimento
                 });
-                add(grid[i][j]);
+                gridPanel.add(grid[i][j]);
             }
         }
     }
