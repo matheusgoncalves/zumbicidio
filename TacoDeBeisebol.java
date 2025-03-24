@@ -1,4 +1,4 @@
-class TacoDeBeisebol extends Arma {
+public final class TacoDeBeisebol extends Arma {
     public TacoDeBeisebol() {
         super("Taco de Beisebol", 1);
     }

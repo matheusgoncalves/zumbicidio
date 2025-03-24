@@ -9,11 +9,44 @@ public class Jogador extends Personagem {
     protected List<Item> inventario; // Lista de itens coletados
     private Mapa mapa;
     private InterfaceMapa interfaceMapa;
+    private Inventario inventarioGUI; // Referência para a interface gráfica
 
     public Jogador(int x, int y, int dificuldade) {
         super(5, x, y);
         this.percepcao = dificuldade;
         this.inventario = new ArrayList<>();
+    }
+
+
+    // Método para definir a referência do inventário gráfico
+    public void setInventarioGUI(Inventario inventarioGUI) {
+        this.inventarioGUI = inventarioGUI;
+    }
+
+    public void coletarItem(Item item) {
+        // Lógica específica para revólver (acumula munição)
+        if (item instanceof Revolver) {
+            for (Item itemExistente : inventario) {
+                if (itemExistente instanceof Revolver) {
+                    Revolver revolverExistente = (Revolver) itemExistente;
+                    revolverExistente.adicionarMunicao();
+                    Mensagem.exibirMensagem("Munição do revólver aumentada para: " + revolverExistente.getMunicao());
+                    atualizarInventarioGUI(); // Atualiza a interface
+                    return;
+                }
+            }
+        }
+
+        inventario.add(item);
+        Mensagem.exibirMensagem("Item coletado: " + item.getNome());
+        atualizarInventarioGUI(); // Atualiza a interface
+    }
+
+    // Método para atualizar a interface gráfica do inventário
+    private void atualizarInventarioGUI() {
+        if (inventarioGUI != null) {
+            inventarioGUI.atualizarBotoes();
+        }
     }
 
     @Override
@@ -135,24 +168,6 @@ public class Jogador extends Personagem {
         InterfaceCombate.mostrarJanelaCombate(this, zumbi, onAtacar, onFugir);
     }
 
-    // Coletar qualquer tipo de item
-    public void coletarItem(Item item) {
-        // Lógica específica para revólver (acumula munição)
-        if (item instanceof Revolver) {
-            for (Item itemExistente : inventario) {
-                if (itemExistente instanceof Revolver) {
-                    Revolver revolverExistente = (Revolver) itemExistente;
-                    revolverExistente.adicionarMunicao();
-                    Mensagem.exibirMensagem("Munição do revólver aumentada para: " + revolverExistente.getMunicao());
-                    return;
-                }
-            }
-        }
-
-        inventario.add(item);
-
-        Mensagem.exibirMensagem("Item coletado: " + item.getNome());
-    }
 
     public void usarItem(Item item) {
         if (item instanceof Usavel) {
@@ -246,5 +261,9 @@ public class Jogador extends Personagem {
     // Método para listar itens disponíveis
     public List<Item> getItensDisponiveis() {
         return new ArrayList<>(inventario);
+    }
+
+    public List<Item> getInventario() {
+        return inventario;
     }
 }
