@@ -18,11 +18,10 @@ public abstract class Zumbi extends Personagem {
 
     public void receberDano(int dano) {
         saude -= dano;
-        System.out.println("Zumbi sofreu " + dano + " de dano!");
+        Mensagem.exibirMensagem("Zumbi sofreu " + dano + " de dano!");
 
         if (saude <= 0) {
-            System.out.println("Zumbi eliminado!");
-            // Remover zumbi da tela
+            Mensagem.exibirMensagem("Zumbi eliminado!");
         }
     }
 

@@ -85,44 +85,29 @@ public class Jogador extends Personagem {
         Random random = new Random();
         Mensagem.exibirMensagem("Combate iniciado contra " + zumbi.getClass().getSimpleName() + "!");
 
-        // Ataque inicial obrigatório
-        Mensagem.exibirMensagem("\nTurno do jogador (ataque inicial):");
         Arma[] armaSelecionada = {escolherArma()};
         atacar(zumbi, armaSelecionada[0]);
         interfaceMapa.atualizarGrid();
         InterfaceCombate.atualizarInterface(this, zumbi);
 
-        if (!zumbi.estaVivo()) {
-            Mensagem.exibirMensagem("O zumbi foi derrotado no primeiro golpe!");
-            mapa.removerZumbi(zumbi);
-            return;
-        } else if (!this.estaVivo()) {
-            Mensagem.exibirMensagem("Derrota! Você foi derrotado no primeiro ataque!");
-            return;
-        }
-
         // Configura os listeners para as ações de atacar e fugir
         final boolean[] combateAtivo = {true}; // Controle local do combate
         ActionListener onAtacar = e -> {
             if (combateAtivo[0] && zumbi.estaVivo() && this.estaVivo()) {
-                Mensagem.exibirMensagem("\nTurno do jogador:");
                 armaSelecionada[0] = escolherArma();
                 atacar(zumbi, armaSelecionada[0]);
 
                 if (!zumbi.estaVivo()) {
-                    Mensagem.exibirMensagem("O zumbi foi derrotado!");
                     mapa.removerZumbi(zumbi);
                     interfaceMapa.atualizarGrid();
                     InterfaceCombate.fecharJanela();
                     combateAtivo[0] = false;
                 } else {
                     // Turno do zumbi
-                    Mensagem.exibirMensagem("\nTurno do zumbi:");
-
                     int dadoEsquiva = random.nextInt(6) + 1;
 
                     if (esquivar(dadoEsquiva)) {
-                        Mensagem.exibirMensagem("Você esquivou do ataque do zumbi!");
+                        Mensagem.exibirMensagem("(O zumbi está atacando...)");
                     } else {
                         zumbi.atacar(this);
                     }
@@ -131,7 +116,7 @@ public class Jogador extends Personagem {
                     interfaceMapa.atualizarGrid();
 
                     if (!this.estaVivo()) {
-                        System.out.println("Derrota! Você foi derrotado pelo zumbi!");
+                        Mensagem.exibirMensagem("Derrota! Você foi derrotado pelo zumbi!");
                         InterfaceCombate.fecharJanela();
                         combateAtivo[0] = false;
                     }
@@ -141,7 +126,7 @@ public class Jogador extends Personagem {
 
         ActionListener onFugir = e -> {
             if (combateAtivo[0]) {
-                System.out.println("Você fugiu do combate!");
+                Mensagem.exibirMensagem("Você fugiu do combate!");
                 combateAtivo[0] = false;
             }
         };
@@ -208,7 +193,6 @@ public class Jogador extends Personagem {
             }
 
             zumbi.receberDano(dano);
-            Mensagem.exibirMensagem("O zumbi recebeu " + dano + " de dano!");
         } else {
             System.out.println(zumbi.getMensagemErro());
         }

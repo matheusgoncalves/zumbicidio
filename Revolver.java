@@ -9,17 +9,17 @@ class Revolver extends Arma {
     public boolean atirar() {
         if (municao > 0) {
             municao--;
-            System.out.println("Disparo realizado! Munição restante: " + municao);
+            Mensagem.exibirMensagem("Disparo realizado! Munição restante: " + municao);
             return true;
         } else {
-            System.out.println("Sem munição!");
+            Mensagem.exibirMensagem("Sem munição!");
             return false;
         }
     }
 
     public void adicionarMunicao() {
         municao++;
-        System.out.println("Munição recarregada! Munição atual: " + municao);
+        Mensagem.exibirMensagem("Munição recarregada! Munição atual: " + municao);
     }
 
     public int getMunicao() {

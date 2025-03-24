@@ -8,7 +8,7 @@ public class Mensagem {
         JDialog dialog = pane.createDialog("Zumbicídio");
 
         // Estiliza o JOptionPane
-        pane.setBackground(new Color(50, 50, 50)); // Fundo cinza escuro
+        pane.setBackground(new Color(50, 50, 50)); // Fundo cinza-escuro
         pane.setForeground(Color.WHITE); // Texto branco
         pane.setFont(new Font("Arial", Font.PLAIN, 14)); // Fonte maior e legível
 
@@ -16,7 +16,7 @@ public class Mensagem {
         UIManager.put("Panel.background", new Color(50, 50, 50)); // Fundo do painel
         UIManager.put("OptionPane.background", new Color(50, 50, 50)); // Fundo geral
         UIManager.put("OptionPane.messageForeground", Color.WHITE); // Texto da mensagem
-        UIManager.put("Button.background", new Color(139, 0, 0)); // Botão vermelho escuro
+        UIManager.put("Button.background", new Color(161, 135, 0)); // Botão vermelho-escuro
         UIManager.put("Button.foreground", Color.WHITE); // Texto do botão branco
         UIManager.put("Button.font", new Font("Arial", Font.BOLD, 12)); // Fonte do botão
 
@@ -32,7 +32,6 @@ public class Mensagem {
         dialog.setLocation(x, 150); // Centralizado em x, 150px do topo
         dialog.setBackground(new Color(50, 50, 50)); // Fundo do diálogo
         dialog.setForeground(Color.WHITE); // Texto geral
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(Color.RED, 2)); // Borda vermelha
 
         dialog.setVisible(true);
     }

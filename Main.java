@@ -14,7 +14,7 @@ public class Main {
 
         Mapa mapa = new Mapa(randomMap, jogador);
 
-        JFrame janela = new JFrame("Mapa Grid");
+        JFrame janela = new JFrame("Zumbicidio");
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setSize(600, 600);
         janela.setResizable(false);
