@@ -99,18 +99,55 @@ public class Jogador extends Personagem {
         return mapa;
     }
 
-    // Método auxiliar para escolher arma (simplificado por enquanto)
     private Arma escolherArma() {
-        // Por enquanto, retorna null (ataque com as mãos) ou a primeira arma do inventário
-        if (inventario.isEmpty()) {
-            return null; // Ataque com as mãos
-        }
+        List<Arma> armasDisponiveis = new ArrayList<>();
+        boolean temTaco = false;
+
+        // Coleta todas as armas do inventário e verifica se há Taco de Beisebol
         for (Item item : inventario) {
             if (item instanceof Arma) {
-                return (Arma) item; // Usa a primeira arma encontrada
+                armasDisponiveis.add((Arma) item);
+                if (item instanceof TacoDeBeisebol) {
+                    temTaco = true;
+                }
             }
         }
-        return null;
+
+        // Se não há armas, retorna null (mãos)
+        if (armasDisponiveis.isEmpty()) {
+            return null;
+        }
+
+        // Monta as opções para o diálogo
+        List<String> opcoes = new ArrayList<>();
+        for (Arma arma : armasDisponiveis) {
+            opcoes.add(arma.getNome());
+        }
+        if (!temTaco) {
+            opcoes.add("Usar as mãos");
+        }
+
+        // Exibe o diálogo de escolha
+        String escolha = (String) JOptionPane.showInputDialog(
+                null,
+                "Escolha uma arma para atacar:",
+                "Seleção de Arma",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                opcoes.toArray(),
+                opcoes.get(0)
+        );
+
+        // Retorna a arma escolhida ou null para mãos
+        if (escolha == null || escolha.equals("Usar as mãos")) {
+            return null;
+        }
+        for (Arma arma : armasDisponiveis) {
+            if (arma.getNome().equals(escolha)) {
+                return arma;
+            }
+        }
+        return null; // Fallback, caso algo dê errado
     }
 
     public void iniciarCombate(Zumbi zumbi) {

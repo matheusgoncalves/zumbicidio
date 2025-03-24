@@ -2,23 +2,26 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Mapa {
     private final List<Object>[][] grid; // Matriz de listas
     private final int TAMANHO = 10;
     private final Jogador jogador;
     private List<Zumbi> zumbis = new ArrayList<>();
+    private List<Integer> numerosDisponiveis; // Lista de números disponíveis para baús
 
     @SuppressWarnings("unchecked")
     public Mapa(String[][] mapaSimbolos, Jogador jogador) {
         this.grid = new List[TAMANHO][TAMANHO];
         this.jogador = jogador;
         jogador.vincularMapa(this);
+        inicializarNumerosDisponiveis();
         inicializarGrid(mapaSimbolos);
     }
 
     private static final String[][] MAPA1 = {
-            {"h", "p", "", "b", "", "", "", "z", "", ""},
+            {"h", "p", "", "", "", "", "", "z", "", ""},
             {"", "p", "", "p", "zr", "", "", "b", "", ""},
             {"", "p", "", "p", "", "", "p", "p", "", "z"},
             {"", "p", "", "p", "", "", "p", "p", "", ""},
@@ -39,18 +42,18 @@ public class Mapa {
             {"z", "p", "", "p", "zc", "", "p", "", "p", ""},
             {"", "p", "z", "", "", "zr", "", "p", "", ""},
             {"b", "p", "p", "p", "", "p", "", "p", "z", ""},
-            {"p", "p", "p", "p", "b", "p", "", "p", "", "zg"}
+            {"p", "p", "p", "p", "", "p", "", "p", "", "zg"}
     };
     private static final String[][] MAPA3 = {
             {"h", "p", "p", "", "", "z", "b", "", "", ""},
             {"", "", "", "p", "", "p", "", "p", "z", ""},
             {"", "", "b", "", "", "p", "p", "p", "p", "zc"},
             {"", "p", "p", "p", "", "zr", "", "", "", "p"},
-            {"z", "", "", "p", "zc", "p", "b", "", "p", ""},
+            {"z", "", "", "p", "zc", "p", "", "", "p", ""},
             {"p", "p", "", "", "", "", "p", "z", "", "p"},
             {"", "", "p", "z", "", "", "", "p", "zr", ""},
             {"p", "", "", "", "", "zc", "", "", "p", "b"},
-            {"p", "p", "", "p", "", "p", "", "z", "", "p"},
+            {"p", "p", "", "p", "", "p", "", "z", "", ""},
             {"p", "p", "z", "p", "b", "p", "", "p", "p", "zg"}
     };
 
@@ -64,6 +67,15 @@ public class Mapa {
             default: return MAPA1;
         }
     };
+
+    // Inicializa a lista de números disponíveis
+    private void inicializarNumerosDisponiveis() {
+        numerosDisponiveis = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            numerosDisponiveis.add(i); // Adiciona 1, 2, 3, 4
+        }
+        Collections.shuffle(numerosDisponiveis); // Embaralha para aleatoriedade
+    }
 
     // Converte símbolos para objetos
     private void inicializarGrid(String[][] mapaSimbolos) {
@@ -102,9 +114,14 @@ public class Mapa {
         }
     }
 
-    // Implementar gerarNumeroAleatorio
+    // Gera um número único para cada baú, ou repete se necessário
     private int gerarNumeroAleatorio() {
-        return new Random().nextInt(4) + 1;
+        if (numerosDisponiveis.isEmpty()) {
+            // Se todos os números foram usados, retorna um valor padrão ou reinicia
+            return new Random().nextInt(4) + 1; // Repetição permitida após esgotar
+        }
+        // Remove e retorna o primeiro número disponível
+        return numerosDisponiveis.remove(0);
     }
 
     // Método para atualizar posições
