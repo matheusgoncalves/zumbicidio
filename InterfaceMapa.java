@@ -51,7 +51,27 @@ public class InterfaceMapa extends JPanel {
 
     //seleciona o icone correspondente ao grid
     private ImageIcon obterIcone(int x, int y) {
+        Jogador jogador = mapa.getJogador();
+        int jogadorX = jogador.getX();
+        int jogadorY = jogador.getY();
+
+        // Calcula a distância de Manhattan
+        int distancia = Math.abs(jogadorX - x) + Math.abs(jogadorY - y);
+        final int ALCANCE_NORMAL = 1;
+        final int ALCANCE_PAREDES = 3;
+
         List<Object> elementos = mapa.getCelula(x, y);
+        boolean temParede = elementos.stream().anyMatch(e -> e instanceof Parede);
+
+        // Se estiver no alcance aumentado para paredes e houver parede
+        if (distancia <= ALCANCE_PAREDES && temParede) {
+            return new ImageIcon("sprites/parede.png");
+        }
+
+        // Se estiver além do alcance normal, mostra escuridão
+        if (distancia > ALCANCE_NORMAL) {
+            return new ImageIcon("sprites/chao.png");
+        }
 
         // Prioridade: mostrar o jogador se estiver presente
         for (Object elemento : elementos) {
