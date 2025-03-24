@@ -1,4 +1,4 @@
-class Revolver extends Arma {
+public final class Revolver extends Arma {
     private int municao;
 
     public Revolver() {

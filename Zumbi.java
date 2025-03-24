@@ -42,6 +42,7 @@ public abstract class Zumbi extends Personagem {
 
         if (saude <= 0) {
             Mensagem.exibirMensagem("Zumbi eliminado!");
+            saude = 0;
         }
     }
 

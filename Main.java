@@ -9,6 +9,7 @@ public class Main {
         System.out.println(menu.isDebugMode());
 
         Jogador jogador = new Jogador(0,0,percepcao);
+        Inventario inventarioGUI = new Inventario(jogador);
 
         String[][] randomMap = Mapa.randomMap();
 
@@ -27,6 +28,20 @@ public class Main {
 
         janela.setVisible(true);
 
-        SwingUtilities.invokeLater(() -> new Inventario(jogador.getItensDisponiveis(), jogador).setVisible(true));
+        // Conecta o jogador à interface gráfica
+        jogador.setInventarioGUI(inventarioGUI);
+
+        // Exemplo de uso
+        jogador.coletarItem(new Revolver());
+
+        inventarioGUI.setVisible(true);
+
+        jogador.coletarItem(new Revolver());
+        jogador.coletarItem(new TacoDeBeisebol());
+        jogador.coletarItem(new Cura());
+
+
+
+        System.out.println(jogador.getItensDisponiveis());
     }
 }
