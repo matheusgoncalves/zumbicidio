@@ -47,6 +47,7 @@ public class MenuDificuldade extends JFrame {
 
     public static int exibirMenu() {
         MenuDificuldade menu = new MenuDificuldade();
+        menu.setLocationRelativeTo(null);
         menu.setVisible(true);
 
         while (menu.getPercepcaoEscolhida() == -1) {

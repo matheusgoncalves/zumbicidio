@@ -31,12 +31,12 @@ public class Jogador extends Personagem {
 
         // Só permite movimento de 1 casa (horizontal ou vertical)
         if ((distanciaX > 1 || distanciaY > 1) || (distanciaX + distanciaY != 1)) {
-            System.out.println("Movimento inválido! Só pode mover 1 casa por vez.");
+            Mensagem.exibirMensagem("Movimento inválido! Só pode mover 1 casa por vez.");
             return;
         }
 
         if (!mapa.posicaoValida(novoX, novoY)) {
-            System.out.println("Movimento bloqueado!");
+            Mensagem.exibirMensagem("Movimento bloqueado!");
             return;
         }
 
@@ -83,21 +83,21 @@ public class Jogador extends Personagem {
 
     public void iniciarCombate(Zumbi zumbi) {
         Random random = new Random();
-        System.out.println("Combate iniciado contra " + zumbi.getClass().getSimpleName() + "!");
+        Mensagem.exibirMensagem("Combate iniciado contra " + zumbi.getClass().getSimpleName() + "!");
 
         // Ataque inicial obrigatório
-        System.out.println("\nTurno do jogador (ataque inicial):");
+        Mensagem.exibirMensagem("\nTurno do jogador (ataque inicial):");
         Arma[] armaSelecionada = {escolherArma()};
         atacar(zumbi, armaSelecionada[0]);
         interfaceMapa.atualizarGrid();
         InterfaceCombate.atualizarInterface(this, zumbi);
 
         if (!zumbi.estaVivo()) {
-            System.out.println("O zumbi foi derrotado no primeiro golpe!");
+            Mensagem.exibirMensagem("O zumbi foi derrotado no primeiro golpe!");
             mapa.removerZumbi(zumbi);
             return;
         } else if (!this.estaVivo()) {
-            interfaceMapa.exibirMensagem("Derrota! Você foi derrotado no primeiro ataque!");
+            Mensagem.exibirMensagem("Derrota! Você foi derrotado no primeiro ataque!");
             return;
         }
 
@@ -105,24 +105,24 @@ public class Jogador extends Personagem {
         final boolean[] combateAtivo = {true}; // Controle local do combate
         ActionListener onAtacar = e -> {
             if (combateAtivo[0] && zumbi.estaVivo() && this.estaVivo()) {
-                System.out.println("\nTurno do jogador:");
+                Mensagem.exibirMensagem("\nTurno do jogador:");
                 armaSelecionada[0] = escolherArma();
                 atacar(zumbi, armaSelecionada[0]);
 
                 if (!zumbi.estaVivo()) {
-                    interfaceMapa.exibirMensagem("O zumbi foi derrotado!");
+                    Mensagem.exibirMensagem("O zumbi foi derrotado!");
                     mapa.removerZumbi(zumbi);
                     interfaceMapa.atualizarGrid();
                     InterfaceCombate.fecharJanela();
                     combateAtivo[0] = false;
                 } else {
                     // Turno do zumbi
-                    System.out.println("\nTurno do zumbi:");
+                    Mensagem.exibirMensagem("\nTurno do zumbi:");
 
                     int dadoEsquiva = random.nextInt(6) + 1;
 
                     if (esquivar(dadoEsquiva)) {
-                        System.out.println("Você esquivou do ataque do zumbi!");
+                        Mensagem.exibirMensagem("Você esquivou do ataque do zumbi!");
                     } else {
                         zumbi.atacar(this);
                     }
@@ -158,7 +158,7 @@ public class Jogador extends Personagem {
                 if (itemExistente instanceof Revolver) {
                     Revolver revolverExistente = (Revolver) itemExistente;
                     revolverExistente.adicionarMunicao();
-                    System.out.println("Munição do revólver aumentada para: " + revolverExistente.getMunicao());
+                    Mensagem.exibirMensagem("Munição do revólver aumentada para: " + revolverExistente.getMunicao());
                     return;
                 }
             }
@@ -166,7 +166,7 @@ public class Jogador extends Personagem {
 
         inventario.add(item);
 
-        System.out.println("Item coletado: " + item.getNome());
+        Mensagem.exibirMensagem("Item coletado: " + item.getNome());
     }
 
     public void usarItem(Item item) {
@@ -174,14 +174,14 @@ public class Jogador extends Personagem {
             ((Usavel) item).usar(this);
             inventario.remove(item); // Remove o item após o uso
         } else {
-            System.out.println("Este item não pode ser usado!");
+            Mensagem.exibirMensagem("Este item não pode ser usado!");
         }
     }
 
     // Método para recuperar vida (ao utilizar uma atadura)
     public void recuperarVida(int vida) {
         saude += vida;
-        System.out.println("O jogador recuperou " + vida + " de vida! Saúde atual: " + saude);
+        Mensagem.exibirMensagem("O jogador recuperou " + vida + " de vida! Saúde atual: " + saude);
     }
 
     // Método para atacar um zumbi
@@ -194,7 +194,7 @@ public class Jogador extends Personagem {
                     Revolver revolver = (Revolver) arma;
 
                     if (!revolver.atirar()) {
-                        System.out.println("Falha ao atirar com o revólver.");
+                        Mensagem.exibirMensagem("Falha ao atirar com o revólver.");
                         return;
                     }
                 } else {
@@ -208,7 +208,7 @@ public class Jogador extends Personagem {
             }
 
             zumbi.receberDano(dano);
-            System.out.println("O zumbi recebeu " + dano + " de dano!"); 
+            Mensagem.exibirMensagem("O zumbi recebeu " + dano + " de dano!");
         } else {
             System.out.println(zumbi.getMensagemErro());
         }
@@ -222,7 +222,7 @@ public class Jogador extends Personagem {
     // Método para receber dano
     public void receberDano(int dano) {
         saude -= dano;
-        System.out.println("O jogador recebeu " + dano + " de dano! Saúde atual: " + saude);
+        Mensagem.exibirMensagem("O jogador recebeu " + dano + " de dano! Saúde atual: " + saude);
     }
 
     public void vincularInterfaceMapa(InterfaceMapa interfaceMapa) {
@@ -236,15 +236,15 @@ public class Jogador extends Personagem {
 
         if (bau.getConteudo() instanceof Revolver) {
             // Encontra um zumbi rastejante
-            System.out.println("Um Zumbi Rastejante apareceu!");
+            Mensagem.exibirMensagem("Um Zumbi Rastejante apareceu!");
 
             // Tentar esquivar
             Random random = new Random();
             int dado = random.nextInt(6) + 1;
             if (esquivar(dado)) {
-                System.out.println("Você conseguiu esquivar do Zumbi Rastejante!");
+                Mensagem.exibirMensagem("Você conseguiu esquivar do Zumbi Rastejante!");
             } else {
-                System.out.println("Você não conseguiu esquivar do Zumbi Rastejante!");
+                Mensagem.exibirMensagem("Você não conseguiu esquivar do Zumbi Rastejante!");
                 receberDano(1); // Recebe dano do zumbi rastejante
             }
         } else if (bau.getConteudo() != null) {

@@ -22,6 +22,7 @@ public class Bau {
             return "Este baú já foi aberto!";
         }
         aberto = true;
+
         return "O baú continha: " + (conteudo != null ? conteudo.getNome() : "nada");
     }
 
