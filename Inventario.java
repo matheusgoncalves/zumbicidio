@@ -7,16 +7,20 @@ import java.util.List;
 public class Inventario extends JFrame {
     private JButton btnRevolver, btnTaco, btnAtadura;
     private List<Item> itens;
-    private Personagem jogador;
+    private Jogador jogador;
 
     public Inventario(List<Item> itens, Jogador jogador) {
         this.itens = itens;
         this.jogador = jogador;
 
         setTitle("Inventário");
-        setSize(300, 200);
+        setSize(200, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(3, 1));
+        setLocation(1130, 201);
+        setResizable(false);
+
+        JPanel painel = new JPanel(new GridLayout(3, 1, 0, 10));
 
         btnRevolver = new JButton("Revólver");
         btnTaco = new JButton("Taco de Beisebol");

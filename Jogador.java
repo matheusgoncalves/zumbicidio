@@ -93,6 +93,13 @@ public class Jogador extends Personagem {
         // Configura os listeners para as ações de atacar e fugir
         final boolean[] combateAtivo = {true}; // Controle local do combate
         ActionListener onAtacar = e -> {
+            if (!zumbi.estaVivo()) {
+                mapa.removerZumbi(zumbi);
+                interfaceMapa.atualizarGrid();
+                InterfaceCombate.fecharJanela();
+                combateAtivo[0] = false;
+            }
+
             if (combateAtivo[0] && zumbi.estaVivo() && this.estaVivo()) {
                 armaSelecionada[0] = escolherArma();
                 atacar(zumbi, armaSelecionada[0]);
@@ -119,6 +126,7 @@ public class Jogador extends Personagem {
                         Mensagem.exibirMensagem("Derrota! Você foi derrotado pelo zumbi!");
                         InterfaceCombate.fecharJanela();
                         combateAtivo[0] = false;
+                        return;
                     }
                 }
             }
@@ -193,6 +201,9 @@ public class Jogador extends Personagem {
             }
 
             zumbi.receberDano(dano);
+            if (!zumbi.estaVivo()) {
+                mapa.removerZumbi(zumbi);
+            }
         } else {
             System.out.println(zumbi.getMensagemErro());
         }
@@ -206,7 +217,6 @@ public class Jogador extends Personagem {
     // Método para receber dano
     public void receberDano(int dano) {
         saude -= dano;
-        Mensagem.exibirMensagem("O jogador recebeu " + dano + " de dano! Saúde atual: " + saude);
     }
 
     public void vincularInterfaceMapa(InterfaceMapa interfaceMapa) {
@@ -218,18 +228,19 @@ public class Jogador extends Personagem {
         String resultado = bau.abrir();
         System.out.println(resultado);
 
-        if (bau.getConteudo() instanceof Revolver) {
-            // Encontra um zumbi rastejante
+        if ((bau.getConteudo() instanceof Revolver)) {
+            // Cria e adiciona o Zumbi Rastejante ao mapa
+            ZumbiRastejante zumbiRastejante = new ZumbiRastejante(posicaoX, posicaoY); // Aparece na posição do jogador
+            mapa.getCelula(posicaoX, posicaoY).add(zumbiRastejante); // Adiciona ao grid
+            mapa.getZumbis().add(zumbiRastejante); // Adiciona à lista de zumbis
             Mensagem.exibirMensagem("Um Zumbi Rastejante apareceu!");
 
-            // Tentar esquivar
-            Random random = new Random();
-            int dado = random.nextInt(6) + 1;
-            if (esquivar(dado)) {
-                Mensagem.exibirMensagem("Você conseguiu esquivar do Zumbi Rastejante!");
-            } else {
-                Mensagem.exibirMensagem("Você não conseguiu esquivar do Zumbi Rastejante!");
-                receberDano(1); // Recebe dano do zumbi rastejante
+            // Inicia combate com o Zumbi Rastejante
+            iniciarCombate(zumbiRastejante);
+
+            // Remove o zumbi se estiver morto após o combate
+            if (!zumbiRastejante.estaVivo()) {
+                mapa.removerZumbi(zumbiRastejante);
             }
         } else if (bau.getConteudo() != null) {
             coletarItem(bau.getConteudo());
