@@ -9,6 +9,7 @@ class Cura extends Item implements Usavel {
     @Override
     public void usar(Jogador jogador) {
         jogador.recuperarVida(pontosCura);
-        Mensagem.exibirMensagem("O jogador usou uma atadura e recuperou " + pontosCura + " ponto de vida!");
+        jogador.inventario.remove(this);
+        System.out.println("O jogador usou uma atadura e recuperou " + pontosCura + " ponto de vida!");
     }
 }
