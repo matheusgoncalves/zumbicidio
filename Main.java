@@ -26,5 +26,11 @@ public class Main {
         janela.setLocationRelativeTo(null);
 
         janela.setVisible(true);
+
+        SwingUtilities.invokeLater(() -> new Inventario(jogador.getItensDisponiveis(), jogador).setVisible(true));
+
+
+        jogador.coletarItem(new Revolver());
+        jogador.coletarItem(new Cura());
     }
 }
