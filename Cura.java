@@ -1,4 +1,4 @@
-public final class Cura extends Item implements Usavel {
+class Cura extends Item implements Usavel {
     private int pontosCura;
 
     public Cura() {

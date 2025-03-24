@@ -18,9 +18,13 @@ public class Inventario extends JFrame {
 
     private void configurarJanela() {
         setTitle("Inventário");
-        setSize(300, 200);
+        setSize(200, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(3, 1));
+        setLocation(1130, 201);
+        setResizable(false);
+
+        JPanel painel = new JPanel(new GridLayout(3, 1, 0, 10));
     }
 
     private void inicializarComponentes() {
