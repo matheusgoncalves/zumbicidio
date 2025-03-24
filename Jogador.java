@@ -88,7 +88,6 @@ public class Jogador extends Personagem {
         mapa.atualizarPosicao(posicaoX, posicaoY, novoX, novoY);
         posicaoX = novoX;
         posicaoY = novoY;
-
         interfaceMapa.atualizarGrid();
     }
 
