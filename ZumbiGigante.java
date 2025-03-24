@@ -1,17 +1,12 @@
 class ZumbiGigante extends Zumbi {
     public ZumbiGigante(int x, int y) {
-        super(3, x, y);
+        super(3, x, y, 2, 0);
     }
 
     @Override
     public void mover(int x, int y) {
         // O zumbi gigante não se move
         System.out.println("ZumbiGigante não se move.");
-    }
-
-    @Override
-    public void atacar(Jogador jogador) {
-        jogador.receberDano(2);
     }
 
     @Override

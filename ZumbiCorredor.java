@@ -2,23 +2,7 @@ import java.util.Random;
 
 class ZumbiCorredor extends Zumbi {
     public ZumbiCorredor(int x, int y) {
-        super(2, x, y);
-    }
-
-    @Override
-    public void mover(int x, int y) {
-        Random random = new Random();
-
-        int direction = random.nextInt(4);
-
-        switch (direction) {
-            case 0: this.x += 2; break; // Move para a direita
-            case 1: this.x -= 2; break; // Move para a esquerda
-            case 2: this.y += 2; break; // Move para cima
-            case 3: this.y -= 2; break; // Move para baixo
-        }
-
-        System.out.println("ZumbiCorredor se moveu para (" + x + ", " + y + ")");
+        super(2, x, y, 2, 2);
     }
 
     @Override
