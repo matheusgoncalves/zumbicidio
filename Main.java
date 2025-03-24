@@ -31,17 +31,6 @@ public class Main {
         // Conecta o jogador à interface gráfica
         jogador.setInventarioGUI(inventarioGUI);
 
-        // Exemplo de uso
-        jogador.coletarItem(new Revolver());
-
         inventarioGUI.setVisible(true);
-
-        jogador.coletarItem(new Revolver());
-        jogador.coletarItem(new TacoDeBeisebol());
-        jogador.coletarItem(new Cura());
-
-
-
-        System.out.println(jogador.getItensDisponiveis());
     }
 }

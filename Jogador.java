@@ -240,10 +240,17 @@ public class Jogador extends Personagem {
 
     // Método para abrir um baú
     public void abrirBau(Bau bau) {
+        // Verifica se o baú já está aberto antes de qualquer ação
+        if (bau.estaAberto()) {
+            return;
+        }
+
         String resultado = bau.abrir();
         System.out.println(resultado);
 
         if ((bau.getConteudo() instanceof Revolver)) {
+            coletarItem(bau.getConteudo());
+
             // Cria e adiciona o Zumbi Rastejante ao mapa
             ZumbiRastejante zumbiRastejante = new ZumbiRastejante(posicaoX, posicaoY); // Aparece na posição do jogador
             mapa.getCelula(posicaoX, posicaoY).add(zumbiRastejante); // Adiciona ao grid
