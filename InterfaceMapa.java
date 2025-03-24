@@ -60,15 +60,7 @@ public class InterfaceMapa extends JPanel {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 grid[i][j].setIcon(obterIcone(i, j));
-
-                Object celula = mapa.getCelula(i, j);
-                if (celula == null) {
-                    System.out.print(" ,");
-                } else {
-                    System.out.print(celula.getClass().getSimpleName() + ",");
-                }
             }
-                System.out.println();
         }
     }
 
@@ -98,6 +90,8 @@ public class InterfaceMapa extends JPanel {
                 return new ImageIcon("sprites/giantzombie.png");
             } else if (elemento instanceof ZumbiCorredor) {
                 return new ImageIcon("sprites/runner.png");
+            } else if (elemento instanceof ZumbiRastejante) {
+                return new ImageIcon("sprites/rastejante.png");
             }
         }
 

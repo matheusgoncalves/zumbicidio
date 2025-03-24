@@ -84,6 +84,9 @@ public class Mapa {
                     case "zr":
                         grid[i][j].add(new ZumbiCorredor(i, j));
                         break;
+                    case "zc":
+                        grid[i][j].add(new ZumbiRastejante(i, j));
+                        break;
                     case "b":
                         grid[i][j].add(new Bau(gerarNumeroAleatorio()));
                         break;
