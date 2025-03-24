@@ -10,6 +10,7 @@ public class Jogador extends Personagem {
     private Mapa mapa;
     private InterfaceMapa interfaceMapa;
     private Inventario inventarioGUI; // Referência para a interface gráfica
+    private JFrame janela;
 
     public Jogador(int x, int y, int dificuldade) {
         super(5, x, y);
@@ -17,6 +18,9 @@ public class Jogador extends Personagem {
         this.inventario = new ArrayList<>();
     }
 
+    public void setJanela(JFrame janela) {
+        this.janela = janela;
+    }
 
     // Método para definir a referência do inventário gráfico
     public void setInventarioGUI(Inventario inventarioGUI) {
@@ -64,7 +68,7 @@ public class Jogador extends Personagem {
 
         // Só permite movimento de 1 casa (horizontal ou vertical)
         if ((distanciaX > 1 || distanciaY > 1) || (distanciaX + distanciaY != 1)) {
-            Mensagem.exibirMensagem("Movimento inválido! Só pode mover 1 casa por vez.");
+            Mensagem.exibirMensagem("Movimento inválido! Certifique-se de mover-se apenas 1 casa por vez.");
             return;
         }
 
@@ -167,6 +171,7 @@ public class Jogador extends Personagem {
                 interfaceMapa.atualizarGrid();
                 InterfaceCombate.fecharJanela();
                 combateAtivo[0] = false;
+                verificarVitoria();
             }
 
             if (combateAtivo[0] && zumbi.estaVivo() && this.estaVivo()) {
@@ -178,6 +183,7 @@ public class Jogador extends Personagem {
                     interfaceMapa.atualizarGrid();
                     InterfaceCombate.fecharJanela();
                     combateAtivo[0] = false;
+                    verificarVitoria();
                 } else {
                     // Turno do zumbi
                     int dadoEsquiva = random.nextInt(6) + 1;
@@ -192,10 +198,10 @@ public class Jogador extends Personagem {
                     interfaceMapa.atualizarGrid();
 
                     if (!this.estaVivo()) {
-                        Mensagem.exibirMensagem("Derrota! Você foi derrotado pelo zumbi!");
+                        Mensagem.exibirMensagem("Você foi derrotado pelo zumbi!\nVocê perdeu.");
                         InterfaceCombate.fecharJanela();
                         combateAtivo[0] = false;
-                        return;
+                        System.exit(0); // Encerra a aplicação
                     }
                 }
             }
@@ -212,6 +218,16 @@ public class Jogador extends Personagem {
         InterfaceCombate.mostrarJanelaCombate(this, zumbi, onAtacar, onFugir);
     }
 
+    // Método para verificar vitória
+    private void verificarVitoria() {
+        if (mapa.getZumbis().isEmpty()) {
+            Mensagem.exibirMensagem("Parabéns! Todos os zumbis foram derrotados.\nVocê venceu!");
+            if (janela != null) {
+                janela.dispose(); // Fecha a janela do jogo
+            }
+            System.exit(0); // Encerra a aplicação
+        }
+    }
 
     public void usarItem(Item item) {
         if (item instanceof Usavel) {

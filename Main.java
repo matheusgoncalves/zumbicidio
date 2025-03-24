@@ -31,6 +31,7 @@ public class Main {
 
         // Conecta o jogador à interface gráfica
         jogador.setInventarioGUI(inventarioGUI);
+        jogador.setJanela(janela);
 
         inventarioGUI.setVisible(true);
     }

@@ -88,16 +88,24 @@ public class Mapa {
                         grid[i][j].add(new Parede());
                         break;
                     case "z":
-                        grid[i][j].add(new ZumbiComum(i, j));
+                        ZumbiComum zumbiComum = new ZumbiComum(i, j);
+                        grid[i][j].add(zumbiComum);
+                        zumbis.add(zumbiComum);
                         break;
                     case "zg":
-                        grid[i][j].add(new ZumbiGigante(i, j));
+                        ZumbiGigante zumbiGigante = new ZumbiGigante(i, j);
+                        grid[i][j].add(zumbiGigante);
+                        zumbis.add(zumbiGigante);
                         break;
                     case "zr":
-                        grid[i][j].add(new ZumbiCorredor(i, j));
+                        ZumbiCorredor zumbiCorredor = new ZumbiCorredor(i, j);
+                        grid[i][j].add(zumbiCorredor);
+                        zumbis.add(zumbiCorredor);
                         break;
                     case "zc":
-                        grid[i][j].add(new ZumbiRastejante(i, j));
+                        ZumbiRastejante zumbiRastejante = new ZumbiRastejante(i, j);
+                        grid[i][j].add(zumbiRastejante);
+                        zumbis.add(zumbiRastejante);
                         break;
                     case "b":
                         grid[i][j].add(new Bau(gerarNumeroAleatorio()));
