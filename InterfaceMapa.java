@@ -55,51 +55,80 @@ public class InterfaceMapa extends JPanel {
         int jogadorX = jogador.getX();
         int jogadorY = jogador.getY();
 
-        // Calcula a distância de Manhattan
-        int distancia = Math.abs(jogadorX - x) + Math.abs(jogadorY - y);
-        final int ALCANCE_NORMAL = 1;
-        final int ALCANCE_PAREDES = 3;
+        if (!MenuPrincipal.debugMode == true) {
+            // Calcula a distância de Manhattan
+            int distancia = Math.abs(jogadorX - x) + Math.abs(jogadorY - y);
+            final int ALCANCE_NORMAL = 1;
+            final int ALCANCE_PAREDES = 3;
 
-        List<Object> elementos = mapa.getCelula(x, y);
-        boolean temParede = elementos.stream().anyMatch(e -> e instanceof Parede);
+            List<Object> elementos = mapa.getCelula(x, y);
+            boolean temParede = elementos.stream().anyMatch(e -> e instanceof Parede);
 
-        // Se estiver no alcance aumentado para paredes e houver parede
-        if (distancia <= ALCANCE_PAREDES && temParede) {
-            return new ImageIcon("sprites/parede.png");
-        }
-
-        // Se estiver além do alcance normal, mostra escuridão
-        if (distancia > ALCANCE_NORMAL) {
-            return new ImageIcon("sprites/chao.png");
-        }
-
-        // Prioridade: mostrar o jogador se estiver presente
-        for (Object elemento : elementos) {
-            if (elemento instanceof Jogador) {
-                return new ImageIcon("sprites/hero.png");
-            }
-        }
-
-        // Prioridade 2: Mostrar outros elementos
-        for (Object elemento : elementos) {
-            if (elemento instanceof Parede) {
+            // Se estiver no alcance aumentado para paredes e houver parede
+            if (distancia <= ALCANCE_PAREDES && temParede) {
                 return new ImageIcon("sprites/parede.png");
-            } else if (elemento instanceof ZumbiComum) {
-                return new ImageIcon("sprites/zombie.png");
-            } else if (elemento instanceof Bau) {
-                Bau bau = (Bau) elemento;
-                return bau.estaAberto()
-                        ? new ImageIcon("sprites/chest2.png")
-                        : new ImageIcon("sprites/chest.jpg");
-            } else if (elemento instanceof ZumbiGigante) {
-                return new ImageIcon("sprites/giantzombie.png");
-            } else if (elemento instanceof ZumbiCorredor) {
-                return new ImageIcon("sprites/runner.png");
-            } else if (elemento instanceof ZumbiRastejante) {
-                return new ImageIcon("sprites/rastejante.png");
+            }
+
+            // Se estiver além do alcance normal, mostra escuridão
+            if (distancia > ALCANCE_NORMAL) {
+                return new ImageIcon("sprites/chao.png");
+            }
+            // Prioridade: mostrar o jogador se estiver presente
+            for (Object elemento : elementos) {
+                if (elemento instanceof Jogador) {
+                    return new ImageIcon("sprites/hero.png");
+                }
+            }
+
+            // Prioridade 2: Mostrar outros elementos
+            for (Object elemento : elementos) {
+                if (elemento instanceof Parede) {
+                    return new ImageIcon("sprites/parede.png");
+                } else if (elemento instanceof ZumbiComum) {
+                    return new ImageIcon("sprites/zombie.png");
+                } else if (elemento instanceof Bau) {
+                    Bau bau = (Bau) elemento;
+                    return bau.estaAberto()
+                            ? new ImageIcon("sprites/chest2.png")
+                            : new ImageIcon("sprites/chest.jpg");
+                } else if (elemento instanceof ZumbiGigante) {
+                    return new ImageIcon("sprites/giantzombie.png");
+                } else if (elemento instanceof ZumbiCorredor) {
+                    return new ImageIcon("sprites/runner.png");
+                } else if (elemento instanceof ZumbiRastejante) {
+                    return new ImageIcon("sprites/rastejante.png");
+                }
             }
         }
+        else{
 
+            List<Object> elementos = mapa.getCelula(x, y);
+            // Prioridade: mostrar o jogador se estiver presente
+            for (Object elemento : elementos) {
+                if (elemento instanceof Jogador) {
+                    return new ImageIcon("sprites/hero.png");
+                }
+            }
+            // Prioridade 2: Mostrar outros elementos
+            for (Object elemento : elementos) {
+                if (elemento instanceof Parede) {
+                    return new ImageIcon("sprites/parede.png");
+                } else if (elemento instanceof ZumbiComum) {
+                    return new ImageIcon("sprites/zombie.png");
+                } else if (elemento instanceof Bau) {
+                    Bau bau = (Bau) elemento;
+                    return bau.estaAberto()
+                            ? new ImageIcon("sprites/chest2.png")
+                            : new ImageIcon("sprites/chest.jpg");
+                } else if (elemento instanceof ZumbiGigante) {
+                    return new ImageIcon("sprites/giantzombie.png");
+                } else if (elemento instanceof ZumbiCorredor) {
+                    return new ImageIcon("sprites/runner.png");
+                } else if (elemento instanceof ZumbiRastejante) {
+                    return new ImageIcon("sprites/rastejante.png");
+                }
+            }
+        }
         return new ImageIcon("sprites/chao.png");
     }
 }

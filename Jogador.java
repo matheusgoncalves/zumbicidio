@@ -256,7 +256,7 @@ public class Jogador extends Personagem {
                     if (!revolver.atirar()) {
                         Mensagem.exibirMensagem("Falha ao atirar com o revólver.");
                         return;
-                    }
+                    } else{dano = revolver.getDano();}
                 } else {
                     dano = arma.getDano();
                 }

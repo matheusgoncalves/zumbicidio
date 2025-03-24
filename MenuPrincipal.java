@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 public class MenuPrincipal extends JFrame {
     private boolean iniciarJogo = false;
-    private boolean debugMode = false;
+    public static boolean debugMode = false;
 
     public MenuPrincipal() {
         setTitle("Menu Principal");
