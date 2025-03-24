@@ -46,6 +46,7 @@ public class MenuPrincipal extends JFrame {
     public static MenuPrincipal exibirMenu() {
         MenuPrincipal menu = new MenuPrincipal();
         menu.setVisible(true);
+        menu.setLocationRelativeTo(null);
 
         while (!menu.isIniciarJogo()) {
             try {

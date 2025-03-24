@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class InterfaceMapa extends JPanel {
     private final Mapa mapa;
     private final JButton[][] grid;
-    private JTextArea mensagemArea; // Área para exibir mensagens
+//    private JTextArea mensagemArea; // Área para exibir mensagens
 
     public InterfaceMapa(Mapa mapa) {
         this.mapa = mapa;
@@ -18,22 +18,22 @@ public class InterfaceMapa extends JPanel {
         criarGrid(gridPanel);
         add(gridPanel, BorderLayout.CENTER);
 
-        // Área de mensagens
-        mensagemArea = new JTextArea(5, 20); // 5 linhas, 20 colunas
-        mensagemArea.setEditable(false); // Apenas leitura
-        mensagemArea.setLineWrap(true); // Quebra de linha automática
-        mensagemArea.setWrapStyleWord(true); // Quebra em palavras
-        JScrollPane scrollPane = new JScrollPane(mensagemArea); // Adiciona scroll se necessário
-        add(scrollPane, BorderLayout.SOUTH); // Posiciona na parte inferior
+//        // Área de mensagens
+//        mensagemArea = new JTextArea(5, 20); // 5 linhas, 20 colunas
+//        mensagemArea.setEditable(false); // Apenas leitura
+//        mensagemArea.setLineWrap(true); // Quebra de linha automática
+//        mensagemArea.setWrapStyleWord(true); // Quebra em palavras
+//        JScrollPane scrollPane = new JScrollPane(mensagemArea); // Adiciona scroll se necessário
+//        add(scrollPane, BorderLayout.SOUTH); // Posiciona na parte inferior
 
         atualizarGrid();
     }
 
-    // Método para exibir mensagens
-    public void exibirMensagem(String mensagem) {
-        mensagemArea.append(mensagem + "\n"); // Adiciona a mensagem com quebra de linha
-        mensagemArea.setCaretPosition(mensagemArea.getDocument().getLength()); // Rola para o final
-    }
+//    // Método para exibir mensagens
+//    public void exibirMensagem(String mensagem) {
+//        mensagemArea.append(mensagem + "\n"); // Adiciona a mensagem com quebra de linha
+//        mensagemArea.setCaretPosition(mensagemArea.getDocument().getLength()); // Rola para o final
+//    }
 
     // Adicionar método criarGrid
     private void criarGrid(JPanel gridPanel) {

@@ -3,7 +3,6 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-
         int percepcao = MenuDificuldade.exibirMenu();
         MenuPrincipal menu = MenuPrincipal.exibirMenu();
 
@@ -18,6 +17,7 @@ public class Main {
         JFrame janela = new JFrame("Mapa Grid");
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setSize(600, 600);
+        janela.setResizable(false);
 
         InterfaceMapa painelMapa = new InterfaceMapa(mapa);
         jogador.vincularInterfaceMapa(painelMapa);
