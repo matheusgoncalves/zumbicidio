@@ -11,16 +11,18 @@ public class InterfaceCombate extends JPanel {
     }
 
     public static void mostrarJanelaCombate(Jogador jogador, Zumbi zumbi, ActionListener onAtacar, ActionListener onFugir) {
-        if (janela == null && zumbi.estaVivo()) {
-            janela = new JFrame("Combate");
-            janela.setSize(350, 200);
-            janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            janela.setLocationRelativeTo(null);
-            janela.setResizable(false); // Impede redimensionamento
-        }
+        if(zumbi.estaVivo()) {
+            if (janela == null) {
+                janela = new JFrame("Combate");
+                janela.setSize(350, 200);
+                janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                janela.setLocationRelativeTo(null);
+                janela.setResizable(false); // Impede redimensionamento
+            }
 
-        janela.setContentPane(new PainelCombate(jogador, zumbi, onAtacar, onFugir));
-        janela.setVisible(true);
+            janela.setContentPane(new PainelCombate(jogador, zumbi, onAtacar, onFugir));
+            janela.setVisible(true);
+        }
     }
 
     public static void atualizarInterface(Jogador jogador, Zumbi zumbi) {
