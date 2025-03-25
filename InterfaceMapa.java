@@ -55,9 +55,10 @@ public class InterfaceMapa extends JPanel {
         int jogadorX = jogador.getX();
         int jogadorY = jogador.getY();
 
-        if (!MenuPrincipal.debugMode == true) {
+        if (!MenuPrincipal.debugMode) {
             // Calcula a distância de Manhattan
             int distancia = Math.abs(jogadorX - x) + Math.abs(jogadorY - y);
+            int distanciaEuclidiana = Math.max(Math.abs(jogadorX - x), Math.abs(jogadorY - y));
             final int ALCANCE_NORMAL = 1;
             final int ALCANCE_PAREDES = 3;
 
@@ -70,7 +71,7 @@ public class InterfaceMapa extends JPanel {
             }
 
             // Se estiver além do alcance normal, mostra escuridão
-            if (distancia > ALCANCE_NORMAL) {
+            if (distanciaEuclidiana > ALCANCE_NORMAL) {
                 return new ImageIcon("sprites/chao.png");
             }
             // Prioridade: mostrar o jogador se estiver presente

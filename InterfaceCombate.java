@@ -11,7 +11,7 @@ public class InterfaceCombate extends JPanel {
     }
 
     public static void mostrarJanelaCombate(Jogador jogador, Zumbi zumbi, ActionListener onAtacar, ActionListener onFugir) {
-        if (janela == null) {
+        if (janela == null && zumbi.estaVivo()) {
             janela = new JFrame("Combate");
             janela.setSize(350, 200);
             janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
